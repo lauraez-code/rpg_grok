@@ -16,24 +16,27 @@ def buscar_item(catalogo, nome):
     """Procura o item pelo nome (sem diferenciar maiúsculas).
     Devolve o dicionário do item, ou None se não achar.
     Dica: percorra o catálogo com for e compare item["nome"].lower() com nome.lower()"""
-    # TODO
-    raise NotImplementedError
+    
+    for item in catalogo:
+        if item["nome"].lower() == nome.lower():
+            return (item)
 
 
 def mostrar_catalogo(catalogo):
     """Mostra os itens da loja, numerados a partir de 1, por exemplo:
         1. Poção de Vida      Poção       15 moedas"""
-    # TODO
-    raise NotImplementedError
+
+    for i, item in enumerate(catalogo):
+        print(f"{i+1}. {item['nome']:<20} {item['tipo']:<10} {item['preco']} moedas")
 
 
 def mostrar_inventario(heroi):
     """Mostra o ouro e os itens do herói. (PRONTA)"""
-    print(f"{heroi['nome']} tem {heroi['ouro']} moedas.")
-    if len(heroi["inventario"]) == 0:
-        print("Inventário vazio.")
+
+    print(f"\nOuro: {heroi['ouro']} moedas")
+    print("Inventário:")
     for nome, quantidade in heroi["inventario"].items():
-        print(f"  {quantidade} x {nome}")
+        print(f"  {nome}: {quantidade}")
 
 
 def comprar(heroi, catalogo, nome, quantidade=1):
@@ -50,9 +53,23 @@ def comprar(heroi, catalogo, nome, quantidade=1):
          Use o nome do CATÁLOGO (item["nome"]), não o que a pessoa digitou.
       6. Devolva f"Comprou {quantidade} x {item['nome']} por {custo} moedas."
     """
-    # TODO
-    raise NotImplementedError
-
+    item = buscar_item(catalogo, nome)
+    
+    if item is None:
+        return "Esse item não existe na loja."
+    
+    if quantidade < 1:
+        return "Quantidade inválida."
+    
+    custo = item["preco"] * quantidade
+    
+    if heroi["ouro"] < custo:
+        return f"Ouro insuficiente: custa {custo} e você tem {heroi['ouro']}."
+    
+    heroi["ouro"] -= custo
+    heroi["inventario"][item["nome"]] = heroi["inventario"].get(item["nome"], 0) + quantidade
+    
+    return f"Comprou {quantidade} x {item['nome']} por {custo} moedas."
 
 def vender(heroi, catalogo, nome, quantidade=1):
     """DESAFIO: vende um item do inventário pela METADE do preço
@@ -66,5 +83,26 @@ def vender(heroi, catalogo, nome, quantidade=1):
       - Devolva f"Vendeu {quantidade} x {item['nome']} por {valor} moedas."
     Dica: heroi["inventario"].get(item["nome"], 0) dá 0 se o herói não tiver o item.
     """
-    # TODO
-    raise NotImplementedError
+    
+    item = buscar_item(catalogo, nome)
+    
+    if item is None:
+        return "Esse item não existe na loja."
+    
+    tem = heroi["inventario"].get(item["nome"], 0)
+    
+    if quantidade < 1 or quantidade > tem:
+        return f"Você só tem {tem} x {item['nome']}."
+    
+    valor = (item["preco"] // 2) * quantidade
+    heroi["ouro"] += valor
+    heroi["inventario"][item["nome"]] -= quantidade
+    
+    if heroi["inventario"][item["nome"]] == 0:
+        del heroi["inventario"][item["nome"]]
+    
+    return f"Vendeu {quantidade} x {item['nome']} por {valor} moedas."
+    
+    
+ 
+ 

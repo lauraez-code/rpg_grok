@@ -19,15 +19,12 @@ def carregar_json(caminho, padrao=None):
     """Lê o arquivo JSON e devolve os dados.
     Se o arquivo não existir, devolve o valor 'padrao'."""
     
-    os.path.exists(caminho)     
-    
-    if caminho:
-        with open("catalogo.json", "r", encoding="utf-8") as arquivo:
+    if os.path.exists(caminho):
+        with open(caminho, "r", encoding="utf-8") as arquivo:
             dados = json.load(arquivo)
             return (dados)
-    
     else:
-        return(padrao)
+        return padrao   
 
 
 def salvar_json(caminho, dados):
@@ -35,6 +32,6 @@ def salvar_json(caminho, dados):
 
     os.path.exists(caminho) 
     
-    with open("catalo_json", "w", encoding="utf-8") as arquivo:
+    with open(caminho, "w", encoding="utf-8") as arquivo:
         json.dump(dados, arquivo, ensure_ascii=False, indent=2)
     

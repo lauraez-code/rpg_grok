@@ -86,15 +86,13 @@ def batalha(heroi, inimigo, pocoes=3):
             critico = random.randint(1, 10) == 10
             dano = calcular_dano(heroi['ataque'], inimigo['defesa'], critico)
             
-            critico = random.randint(1, 10) == 10
-            
-            if critico == 10:
-                critico = True
-                print(f"\n>> Dano crítico! Você causou {dano} de dano.")
+            if critico == True:
+                
+                print(f"\nDano crítico! Você causou {dano} de dano.")
             
             else:
                 critico = False
-                print(f"\n>>Você causou {dano} de dano.")
+                print(f"\nVocê causou {dano} de dano.")
             
             inimigo['vida'] = aplicar_dano(inimigo['vida'], dano)
             
@@ -106,9 +104,10 @@ def batalha(heroi, inimigo, pocoes=3):
 
                 heroi['vida'] = aplicar_dano(heroi['vida'], dano)
                 
-                print(f"\n>> Goblin deu {dano} de dano em você.")
+                print(f"\nGoblin deu {dano} de dano em você.")
             
             else:
+                print("\n----------------------------------")
                 print(f"\n>> Você matou {inimigo['nome']}!!")
                 
                 
@@ -118,7 +117,7 @@ def batalha(heroi, inimigo, pocoes=3):
                 pocoes = pocoes - 1
             
             else:
-                print("\m>> Você não possui mais poções!")
+                print("\n>> Você não possui mais poções!")
             
             heroi['vida'] = curar(heroi['vida'], heroi['vida_max'])
 
